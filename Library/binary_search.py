@@ -1,22 +1,31 @@
-# binary search를 쉽게 해주는 bisect 모듈
-# binary search는 기본적으로 정렬된 배열에서 특정 원소를 찾을 때 효과적으로 사용 가능
-# bisect_left(), bisect_right()
-# -> O(logn)의 시간복잡도로 작동
+import sys
 
-from bisect import bisect_left, bisect_right
-a = [1, 2, 4, 4, 7]
-target = 4
+def binary_search(array, target, start, end):
 
-print(bisect_left(a, target))
-print(bisect_right(a, target))
+    # while문을 활용한 이진탐색 구현
+    while start <= end:
+        # 반내림으로 mid 결정
+        mid = (start + end) // 2
 
-# left_value <= x <= right_value 인 x의 개수를 구하는 함수
-def count_by_range(a, left_value, right_value):
-    right_index = bisect_right(a, right_value)
-    left_index = bisect_left(a, left_value)
+        if array[mid] == target:
+            return mid
+        elif array[mid] > target:
+            end = mid - 1
+        else:
+            start = mid + 1
 
-    return right_index - left_index
+    return None
 
-lst = [1, 2, 3, 3, 3, 3, 4, 4, 8, 9]
+input = sys.stdin.readline
+n, target = map(int, input().rstrip().split())
+array = list(map(int, input().rstrip().split()))
 
-print(count_by_range(lst, 2, 8))
+# 이진 탐색은 정렬된 리스트로 진행
+array.sort()
+
+
+result = binary_search(array, target, 0, n-1)
+if result == None:
+    print("Can not find the element")
+else:
+    print("Index of the element:", result)
